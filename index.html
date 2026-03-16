@@ -279,20 +279,6 @@ function compressImage(src,callback){
 }
 
 
-
-map.on("click", function(e){
-
-var lat = e.latlng.lat.toFixed(6);
-var lng = e.latlng.lng.toFixed(6);
-
-L.popup()
-.setLatLng(e.latlng)
-.setContent("Lat: " + lat + "<br>Lng: " + lng)
-.openOn(map);
-
-});
-
-
 // 添加 Marker
 function addMarker(photo){
   var angle = (Math.random()*12-6);
