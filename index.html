@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="utf-8">
+<title>Diary of London</title>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+
+<style>
+body{
+  margin:0;
+  font-family:serif;
+  background:#f5f5f5;
+}
+
+#map{
+  height:100vh;
+}
+
+/* 图片容器 */
+.photo-container{
+  display:flex;
+  justify-content:center;
+  transform:rotate(var(--rot));
+}
+
+/* 图片 */
+.photo{
+  width:80px;
+  height:auto;
+  border-radius:4px;
+  box-shadow:0 6px 15px rgba(0,0,0,0.25);
+  animation:float 6s ease-in-out infinite;
+}
+
+/* 漂浮动画 */
+@keyframes float{
+  0%{transform:translateY(0px);}
+  50%{transform:translateY(-4px);}
+  100%{transform:translateY(0px);}
+}
+
+/* 标题 */
+.title{
+  position:absolute;
+  top:25px;
+  left:50%;
+  transform:translateX(-50%);
+  background:rgba(255,255,255,0.9);
+  padding:10px 24px;
+  border-radius:10px;
+  font-size:24px;
+  letter-spacing:2px;
+  z-index:1000;
+  box-shadow:0 4px 10px rgba(0,0,0,0.15);
+}
+
+button{
+  margin-top:20px;
+  padding:6px 10px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="title">Diary of London</div>
+<div id="map"></div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+// 创建地图
+var map = L.map('map',{
+  doubleClickZoom:false
+}).setView([51.5074,-0.1278],13);
+
+// 标准 OpenStreetMap 地图（最常见的伦敦地图）
+L.tileLayer(
+"https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+{
+  maxZoom: 19,
+  attribution: "© OpenStreetMap"
+}
+).addTo(map);
+
+// 读取保存
+var photos = [
+
+{
+  lat: 51.536326,
+  lng: -0.124648,
+  img: "computer.jpg",
+  date: "15 Feb",
+  diary: "Seeking help: wanna to learn Blender, but don't know where to start"
+},
+
+{
+  lat: 51.533092,
+  lng: -0.124916,
+  img: "underground.jpg",
+  date: "12 Mar",
+  diary: "On my way home!!!!"
+},
+
+{
+  lat: 51.531853,
+  lng: -0.126192,
+  img: "cash.jpg",
+  date: "8 Mar",
+  diary: "I'm gonna get some cash out, it good to have some on me."
+}, 
+
+{
+  lat: 51.532623,
+  lng: -0.127126,
+  img: "nail.jpg",
+  date: "8 Mar",
+  diary: "nails check, hair check"
+},
+
+{
+  lat: 51.533333,
+  lng: -0.125467,
+  img: "smoke.jpg",
+  date: "10 Feb",
+  diary: "i usually don’t smoke."
+},
+
+{
+  lat: 51.536366,
+  lng: -0.126211,
+  img: "seat.jpg",
+  date: "2 Feb",
+  diary: "it’s such a nice day today"
+},
+
+{
+  lat: 51.536468,
+  lng: -0.127949,
+  img: "bike.jpg",
+  date: "17 Feb",
+  diary: "Wanna go for a bike ride?"
+},
+
+{
+  lat: 51.534341,
+  lng: -0.124946,
+  img: "jewelry.jpg",
+  date: "17 Feb",
+  diary: "which one do you like better?"
+},
+
+{
+  lat: 51.534323,
+  lng: -0.125242,
+  img: "bag.jpg",
+  date: "17 Feb",
+  diary: "How much is it?"
+},
+
+{
+  lat: 51.506140,
+  lng: -0.115428,
+  img: "gallery.jpg",
+  date: "11 Mar",
+  diary: "I’m exhausted after all that walking around the gallery."
+},
+
+{
+  lat: 51.507529,
+  lng: -0.099432,
+  img: "tea.jpg",
+  date: "13 Mar",
+  diary: "Nice view!"
+},
+
+{
+  lat: 51.506490,
+  lng: -0.099857,
+  img: "book.jpg",
+  date: "13 Mar",
+  diary: "I’m not looking for anything, just browsing."
+},
+
+{
+  lat: 51.511201,
+  lng: -0.129404,
+  img: "movie.jpg",
+  date: "10 Mar",
+  diary: "I dozed off, What’s the movie about?"
+},
+
+{
+  lat: 51.543804,
+  lng: -0.007627,
+  img: "lego.jpg",
+  date: "6 Mar",
+  diary: "These LEGO pieces feel really nice."
+},
+
+{
+  lat: 51.543784,
+  lng: -0.008167,
+  img: "toy.jpg",
+  date: "6 Mar",
+  diary: "So sad I cant get this"
+},
+
+{
+  lat: 51.543477,
+  lng: -0.005190,
+  img: "photo.jpg",
+  date: "15 Mar",
+  diary: "I’m going to print out my photos."
+},
+
+{
+  lat: 51.531486,
+  lng: -0.124227,
+  img: "food.jpg",
+  date: "2 Feb",
+  diary: "I’m starving."
+},
+
+{
+  lat: 51.535452,
+  lng: -0.127051,
+  img: "Hello.jpg",
+  date: "12 Feb",
+  diary: "Hello！"
+},
+
+{
+  lat: 51.533630,
+  lng: -0.124685,
+  img: "walk.jpg",
+  date: "12 Feb",
+  diary: ""
+},
+
+{
+  lat: 51.535969,
+  lng: -0.126987,
+  img: "touch.jpg",
+  date: "12 Feb",
+  diary: ""
+},
+
+];
+
+photos.forEach(addMarker);
+
+
+// 文件输入
+var input = document.createElement("input");
+input.type="file";
+input.accept="image/*";
+var latlng;
+
+// 图片压缩
+function compressImage(src,callback){
+  var img=new Image();
+  img.onload=function(){
+    var canvas=document.createElement("canvas");
+    var max=700;
+    var w=img.width;
+    var h=img.height;
+    if(w>h){ if(w>max){ h=h*(max/w); w=max; } }
+    else{ if(h>max){ w=w*(max/h); h=max; } }
+    canvas.width=w;
+    canvas.height=h;
+    var ctx=canvas.getContext("2d");
+    ctx.drawImage(img,0,0,w,h);
+    callback(canvas.toDataURL("image/jpeg",0.75));
+  };
+  img.src=src;
+}
+
+
+
+map.on("click", function(e){
+
+var lat = e.latlng.lat.toFixed(6);
+var lng = e.latlng.lng.toFixed(6);
+
+L.popup()
+.setLatLng(e.latlng)
+.setContent("Lat: " + lat + "<br>Lng: " + lng)
+.openOn(map);
+
+});
+
+
+// 添加 Marker
+function addMarker(photo){
+  var angle = (Math.random()*12-6);
+  var icon = L.divIcon({
+    html:`<div class="photo-container" style="--rot:${angle}deg"><img class="photo" src="${photo.img}"></div>`,
+    className:"",
+    iconSize:[120,120]
+  });
+  var marker = L.marker([photo.lat,photo.lng],{icon}).addTo(map);
+
+  // 点击删除
+  var popup = document.createElement("div");
+popup.innerHTML = `
+<img src="${photo.img}" width="240"><br>
+<b>${photo.date}</b><br>
+${photo.diary}
+`;
+marker.bindPopup(popup);
+
+  // 新图片加入时同步缩放
+  updatePhotoSize();
+}
+
+// 缩放只作用于图片
+function updatePhotoSize(){
+  var zoom = map.getZoom();
+  var baseZoom = 16;
+  var scale = Math.pow(2, zoom - baseZoom) * 0.45;
+  var size = Math.max(50, Math.min(150, 120*scale));
+  document.querySelectorAll(".photo").forEach(el=>{
+    el.style.width = size + "px";
+  });
+}
+
+map.on("zoom", updatePhotoSize);
+updatePhotoSize();
+</script>
+
+</body>
+</html>
